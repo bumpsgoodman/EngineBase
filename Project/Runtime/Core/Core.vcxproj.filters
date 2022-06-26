@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Public">
+      <UniqueIdentifier>{15c290d6-fcc9-4845-89a6-8228c24519d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private">
+      <UniqueIdentifier>{ee239a23-c231-4a72-9b49-ae14b7295146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\DDrawLib">
+      <UniqueIdentifier>{092edc86-b9f8-4a33-8c96-67a68f39e04a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\Math">
+      <UniqueIdentifier>{d626d078-ec89-4b62-82c7-e00252d6e9f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\Types">
+      <UniqueIdentifier>{4c8b4618-44a4-478a-8bdb-ef8fea1b4c45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\Util">
+      <UniqueIdentifier>{fa749bcb-6b11-4c1d-b154-ecd1b1969897}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private\DDrawLib">
+      <UniqueIdentifier>{1cd9f7f4-56e0-47f7-b3af-7ab4cbfe2401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private\Math">
+      <UniqueIdentifier>{75b663a3-51bc-46d5-bcee-72cdda4f0154}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private\Types">
+      <UniqueIdentifier>{db887a0f-a375-4ca7-80fa-980ad086955b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private\Util">
+      <UniqueIdentifier>{a141d8cc-a5c6-4705-b4f3-4f10ec13caf8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Private\CorePCH.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\DDrawLib\DDrawHeaders.h">
+      <Filter>Public\DDrawLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\DDrawLib\DDrawLib.h">
+      <Filter>Public\DDrawLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Math\Color.h">
+      <Filter>Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Math\MathHeaders.h">
+      <Filter>Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Math\MathUtil.h">
+      <Filter>Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Math\Vector2.h">
+      <Filter>Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Util\Assert.h">
+      <Filter>Public\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Util\SafeDelete.h">
+      <Filter>Public\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Util\UtilHeaders.h">
+      <Filter>Public\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Types\Types.h">
+      <Filter>Public\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Types\Integer.h">
+      <Filter>Public\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Types\Char.h">
+      <Filter>Public\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Util\Timer.h">
+      <Filter>Public\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Types\Float.h">
+      <Filter>Public\Types</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Source\Runtime\Core\Private\CorePCH.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Core\Private\Math\Vector2.cpp">
+      <Filter>Private\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Core\Private\DDrawLib\DDrawLib.cpp">
+      <Filter>Private\DDrawLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Runtime\Core\Private\Util\Timer.cpp">
+      <Filter>Private\Util</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
