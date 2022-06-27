@@ -25,6 +25,8 @@ int WINAPI wWinMain(
 
     }
 
+    WChar buf[1024];
+
 EXIT:
     window::Destroy();
 
