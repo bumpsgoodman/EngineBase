@@ -65,4 +65,5 @@ namespace colors
     const Color RED = { 1.000000f, 0.0000000f, 0.0000000f, 1.000000f };
     const Color BLUE = { 0.000000f, 0.0000000f, 1.0000000f, 1.000000f };
     const Color GREEN = { 0.000000f, 1.0000000f, 0.0000000f, 1.000000f };
+    const Color LIGHT_GRAY = { 0.830000f, 0.830000f, 0.830000f, 1.000000f };
 }

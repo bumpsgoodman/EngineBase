@@ -15,6 +15,7 @@ struct Vector2
 
     Vector2() : Vector2(0.0f, 0.0f) {}
     Vector2(const Int32 x, const Int32 y) : Vector2((Float)x, (Float)y) {}
+    Vector2(const Uint32 x, const Uint32 y) : Vector2((Float)x, (Float)y) {}
     Vector2(const Float x, const Float y) : X(x), Y(y) {}
 
     inline Vector2 operator+(const Vector2& v)

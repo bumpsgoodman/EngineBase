@@ -10,7 +10,7 @@ public:
 	Renderer& operator=(Renderer&&) = default;
 	~Renderer();
 
-	Bool Initialize(const HWND hWnd, const Uint32 width, const Uint32 height);
+	Bool Initialize(const HWND hWnd);
 	void Shutdown();
 	Bool Tick();
 
@@ -22,14 +22,13 @@ public:
 private:
 	void update();
 	void draw() const;
+
+	void drawGrid() const;
+	void drawPlayer() const;
 	
 private:
 	static constexpr Uint32 FRAME = 60;
 	static constexpr Float TICKS_PER_FRAME = 1000.0f / (Float)FRAME;
-
-	LARGE_INTEGER mFrequency = {};
-	LARGE_INTEGER mPrevCounter = {};
-	LARGE_INTEGER mFpsCounter = {};
 
 	uint32_t mFrameCount = 0;
 	Float mFPS = 0.0f;
@@ -37,8 +36,7 @@ private:
 
 private:
 	HWND mhWnd = nullptr;
-	Uint32 mWidth = 0;
-	Uint32 mHeight = 0;
-
 	DDraw* mDDraw = nullptr;
+
+	Vector2 mPlayerPos;
 };

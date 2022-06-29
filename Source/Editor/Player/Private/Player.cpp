@@ -26,7 +26,7 @@ int WINAPI wWinMain(
     renderer = new Renderer();
     AssertW(renderer != nullptr, L"Failed to allocate renderer");
 
-    if (!renderer->Initialize(window::ghWnd, WINDOW_WIDTH, WINDOW_HEIGHT))
+    if (!renderer->Initialize(window::ghWnd))
     {
         AssertW(false, L"Failed to initialize renderer");
         goto EXIT;
