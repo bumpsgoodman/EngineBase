@@ -240,8 +240,7 @@ void DDraw::DrawLineDDA(const Int32 x0, const Int32 y0, const Int32 x1, const In
     endX = MAX(x1, 0);
     endY = MAX(y1, 0);
 
-    
-    x = (Float)startX;
+    Float x = (Float)startX;
     Float y = (Float)startY;
 
     Int32 dx = endX - startX;

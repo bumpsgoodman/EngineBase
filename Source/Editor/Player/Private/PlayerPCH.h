@@ -7,6 +7,7 @@
 
 #include <Windows.h>
 #include <windowsx.h>
+#include <functional>
 
 #include "Types/Types.h"
 #include "Math/MathHeaders.h"

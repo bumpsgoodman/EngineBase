@@ -6,7 +6,7 @@ namespace window
     static HWND ghWnd;
     static wchar_t gAppName[128] = L"EngineBase - ";
     static wchar_t gExtendedAppName[128] = L"Test";
-    static void (*gUpdateWindowPosFunc)(void);
+    static std::function<void(void)> gUpdateWindowPosFunc;
 
     LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
     bool Create(HINSTANCE hInstance, const Uint32 windowWidth, const Uint32 windowHeight);

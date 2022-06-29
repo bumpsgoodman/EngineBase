@@ -16,7 +16,7 @@ public:
 
 private:
     Float mInterval = 0;
-    bool mbOnTick = false;
+    Bool mbOnTick = false;
 
     LARGE_INTEGER mFrequency = {};
     LARGE_INTEGER mPrevCounter = {};
