@@ -21,8 +21,8 @@ Bool Renderer::Initialize(const HWND hWnd)
 		goto FAILED;
 	}
 
-	mPlayerPos.X = mDDraw->GetWidth() / 2 + 49;
-	mPlayerPos.Y = mDDraw->GetHeight() / 2 - 49;
+	mPlayerPos.X = (Float)(mDDraw->GetWidth() / 2 + 51);
+	mPlayerPos.Y = (Float)(mDDraw->GetHeight() / 2 - 49);
 
 	return true;
 
@@ -135,13 +135,13 @@ void Renderer::drawGrid() const
 		mDDraw->DrawLineBresenham(0, row - 1, WINDOW_WIDTH - 1, row - 1, Color::ToARGBHex(colors::BLACK));
 	}
 
-	mDDraw->DrawLineBresenham(0, originPos.Y - 1, WINDOW_WIDTH - 1, originPos.Y - 1, Color::ToARGBHex(colors::RED));
-	mDDraw->DrawLineBresenham(originPos.X - 1, 0, originPos.X - 1, WINDOW_HEIGHT - 1, Color::ToARGBHex(colors::RED));
+	mDDraw->DrawLineBresenham(0, (Int32)originPos.Y - 1, WINDOW_WIDTH - 1, (Int32)originPos.Y - 1, Color::ToARGBHex(colors::RED));
+	mDDraw->DrawLineBresenham((Int32)originPos.X - 1, 0, (Int32)originPos.X - 1, WINDOW_HEIGHT - 1, Color::ToARGBHex(colors::RED));
 }
 
 void Renderer::drawPlayer() const
 {
 	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
 
-	mDDraw->DrawCircle(mPlayerPos.X, mPlayerPos.Y, 20, Color::ToARGBHex(colors::BLUE));
+	mDDraw->DrawCircle((Int32)mPlayerPos.X, (Int32)mPlayerPos.Y, 20, Color::ToARGBHex(colors::BLUE));
 }

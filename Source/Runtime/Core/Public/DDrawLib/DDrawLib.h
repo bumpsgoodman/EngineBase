@@ -10,23 +10,23 @@ public:
     DDraw& operator=(DDraw&&) = delete;
     ~DDraw();
 
-    bool Initialize(const HWND hWnd);
+    Bool Initialize(const HWND hWnd);
     void Cleanup();
 
     void UpdateWindowPos();
     void UpdateWindowSize();
-    bool CreateBackBuffer(const Uint32 width, const Uint32 height);
+    Bool CreateBackBuffer(const Uint32 width, const Uint32 height);
 
     inline HWND GetHWnd() const { return mhWnd; }
     inline Uint32 GetWidth() const { return mWidth; }
     inline Uint32 GetHeight() const { return mHeight; }
 
-    bool BeginDraw();
+    Bool BeginDraw();
     void EndDraw();
     void Clear(const Uint32 color);
     void Blt();
 
-    bool BeginGDI(HDC* outHdc);
+    Bool BeginGDI(HDC* outHdc);
     void EndGDI(const HDC hdc);
     void PrintText(const HDC hdc, const wchar_t* const text, const Int32 destX, const Int32 destY, const Uint32 length, const Uint32 color);
 

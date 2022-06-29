@@ -9,9 +9,9 @@ namespace window
     static std::function<void(void)> gUpdateWindowPosFunc;
 
     LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-    bool Create(HINSTANCE hInstance, const Uint32 windowWidth, const Uint32 windowHeight);
+    Bool Create(HINSTANCE hInstance, const Uint32 windowWidth, const Uint32 windowHeight);
     void Destroy();
-    bool Tick();
+    Bool Tick();
 
     void SetTitle();
 
@@ -62,7 +62,7 @@ LRESULT CALLBACK window::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     return 0;
 }
 
-bool window::Create(HINSTANCE hInstance, const Uint32 windowWidth, const Uint32 windowHeight)
+Bool window::Create(HINSTANCE hInstance, const Uint32 windowWidth, const Uint32 windowHeight)
 {
     ghInstance = hInstance;
 
@@ -106,7 +106,7 @@ void window::Destroy()
     DestroyWindow(ghWnd);
 }
 
-bool window::Tick()
+Bool window::Tick()
 {
     MSG msg = {};
 

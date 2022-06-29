@@ -12,7 +12,7 @@ public:
     void Update();
 
     inline Float GetInterval() const { return mInterval; }
-    inline bool IsOnTick() const { return mbOnTick; }
+    inline Bool IsOnTick() const { return mbOnTick; }
 
 private:
     Float mInterval = 0;

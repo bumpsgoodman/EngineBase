@@ -5,7 +5,7 @@ DDraw::~DDraw()
     Cleanup();
 }
 
-bool DDraw::Initialize(const HWND hWnd)
+Bool DDraw::Initialize(const HWND hWnd)
 {
     HRESULT hr;
     DDSURFACEDESC2 ddsd = {};
@@ -96,7 +96,7 @@ void DDraw::UpdateWindowSize()
     CreateBackBuffer(width, height);
 }
 
-bool DDraw::CreateBackBuffer(const Uint32 width, const Uint32 height)
+Bool DDraw::CreateBackBuffer(const Uint32 width, const Uint32 height)
 {
     AssertW(mDD7 != nullptr, L"DDraw object is nullptr");
 
@@ -124,7 +124,7 @@ EXIT:
     return false;
 }
 
-bool DDraw::BeginDraw()
+Bool DDraw::BeginDraw()
 {
     AssertW(mBack != nullptr, L"th back buffer is nullptr");
 
@@ -179,7 +179,7 @@ void DDraw::Blt()
     mPrimary->Blt(&mWindowRect, mBack, nullptr, DDBLT_WAIT, nullptr);
 }
 
-bool DDraw::BeginGDI(HDC* outHdc)
+Bool DDraw::BeginGDI(HDC* outHdc)
 {
     HRESULT hr;
     HDC hdc;
@@ -275,7 +275,7 @@ void DDraw::DrawLineBresenham(const Int32 x0, const Int32 y0, const Int32 x1, co
 
     Int32 width = x1 - x0;
     Int32 height = y1 - y0;
-    bool bGradualSlope = (ABS(width) >= ABS(height)) ? true : false;
+    Bool bGradualSlope = (ABS(width) >= ABS(height)) ? true : false;
 
     Int32 dx = (width >= 0) ? 1 : -1;
     Int32 dy = (height >= 0) ? 1 : -1;
