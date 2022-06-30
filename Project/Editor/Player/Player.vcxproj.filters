@@ -18,6 +18,9 @@
     <ClCompile Include="..\..\..\Source\Editor\Player\Private\Renderer.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\Editor\Player\Private\Event.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Editor\Player\Private\Window.h">
@@ -27,6 +30,9 @@
       <Filter>Private</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\Editor\Player\Private\Renderer.h">
+      <Filter>Private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Editor\Player\Private\Event.h">
       <Filter>Private</Filter>
     </ClInclude>
   </ItemGroup>

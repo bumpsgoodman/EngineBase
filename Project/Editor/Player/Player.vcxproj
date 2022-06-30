@@ -161,6 +161,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Source\Editor\Player\Private\Event.cpp" />
     <ClCompile Include="..\..\..\Source\Editor\Player\Private\Player.cpp" />
     <ClCompile Include="..\..\..\Source\Editor\Player\Private\PlayerPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -171,6 +172,7 @@
     <ClCompile Include="..\..\..\Source\Editor\Player\Private\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Source\Editor\Player\Private\Event.h" />
     <ClInclude Include="..\..\..\Source\Editor\Player\Private\PlayerPCH.h" />
     <ClInclude Include="..\..\..\Source\Editor\Player\Private\Renderer.h" />
     <ClInclude Include="..\..\..\Source\Editor\Player\Private\Window.h" />
