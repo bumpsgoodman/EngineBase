@@ -40,7 +40,7 @@ LRESULT CALLBACK window::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     {
         Uint32 x = GET_X_LPARAM(lParam);
         Uint32 y = GET_Y_LPARAM(lParam);
-        //event::mouse::OnClick(x, y);
+        event::mouse::OnClick(x, y);
         break;
     }
     case WM_MOVE:
@@ -50,10 +50,10 @@ LRESULT CALLBACK window::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         }
         break;
     case WM_KEYDOWN:
-        //event::keyboard::KeyDown((uint8_t)wParam);
+        event::keyboard::KeyDown((Uint8)wParam);
         break;
     case WM_KEYUP:
-        //event::keyboard::KeyUp((uint8_t)wParam);
+        event::keyboard::KeyUp((Uint8)wParam);
         break;
     default:
         return DefWindowProcW(hWnd, uMsg, wParam, lParam);
