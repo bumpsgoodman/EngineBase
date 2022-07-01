@@ -21,6 +21,9 @@
     <ClInclude Include="..\..\..\Source\Runtime\Engine\Public\EngineHeaders.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Engine\Public\ComponentManager.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Runtime\Engine\Private\EnginePCH.cpp">

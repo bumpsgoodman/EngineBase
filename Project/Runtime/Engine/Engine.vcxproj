@@ -158,6 +158,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Runtime\Engine\Private\EnginePCH.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Engine\Public\ComponentManager.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Engine\Public\EngineHeaders.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Engine\Public\Entity.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Engine\Public\EntityManager.h" />
