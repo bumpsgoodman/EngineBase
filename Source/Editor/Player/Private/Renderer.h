@@ -38,5 +38,6 @@ private:
 	HWND mhWnd = nullptr;
 	DDraw* mDDraw = nullptr;
 
-	Vector2 mPlayerPos;
+	Vector2 mPlayerPos = {};
+	Float mPlayerSpeed = 1.5f;
 };

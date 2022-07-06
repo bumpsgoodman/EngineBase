@@ -21,8 +21,8 @@ Bool Renderer::Initialize(const HWND hWnd)
 		goto FAILED;
 	}
 
-	mPlayerPos.X = (Float)(mDDraw->GetWidth() / 2 + 51);
-	mPlayerPos.Y = (Float)(mDDraw->GetHeight() / 2 - 49);
+	mPlayerPos.X = (Float)(mDDraw->GetWidth() / 2 - 1);
+	mPlayerPos.Y = (Float)(mDDraw->GetHeight() / 2 - 1);
 
 	return true;
 
@@ -74,7 +74,29 @@ void Renderer::UpdateWindowPos()
 
 void Renderer::update()
 {
+	Vector2 dir = {};
 
+	if (event::keyboard::IsKeyPressed(VK_LEFT))
+	{
+		dir.X = -1;
+	}
+
+	if (event::keyboard::IsKeyPressed(VK_RIGHT))
+	{
+		dir.X = 1;
+	}
+
+	if (event::keyboard::IsKeyPressed(VK_UP))
+	{
+		dir.Y = -1;
+	}
+
+	if (event::keyboard::IsKeyPressed(VK_DOWN))
+	{
+		dir.Y = 1;
+	}
+
+	mPlayerPos = mPlayerPos + (dir * mPlayerSpeed);
 }
 
 void Renderer::draw() const
@@ -143,5 +165,5 @@ void Renderer::drawPlayer() const
 {
 	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
 
-	mDDraw->DrawCircle((Int32)mPlayerPos.X, (Int32)mPlayerPos.Y, 20, Color::ToARGBHex(colors::BLUE));
+	mDDraw->DrawCircle((Int32)mPlayerPos.X, (Int32)mPlayerPos.Y, 5, Color::ToARGBHex(colors::BLUE));
 }
