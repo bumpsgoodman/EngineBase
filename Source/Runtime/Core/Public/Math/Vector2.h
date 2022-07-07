@@ -48,6 +48,11 @@ struct Vector2
         return Vector2(X * scalar, Y * scalar);
     }
 
+    inline Vector2 operator*(const Float scalar) const
+    {
+        return Vector2(X * scalar, Y * scalar);
+    }
+
     inline Vector2 operator/(const Float scalar)
     {
         return Vector2(X / scalar, Y / scalar);

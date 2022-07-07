@@ -21,8 +21,11 @@ Bool Renderer::Initialize(const HWND hWnd)
 		goto FAILED;
 	}
 
-	mPlayerPos.X = (Float)(mDDraw->GetWidth() / 2 - 1);
-	mPlayerPos.Y = (Float)(mDDraw->GetHeight() / 2 - 1);
+	//mPlayerPos.X = (Float)(mDDraw->GetWidth() / 2 - 1);
+	//mPlayerPos.Y = (Float)(mDDraw->GetHeight() / 2 - 1);
+
+	mPlayerPos.X = 100.0f;
+	mPlayerPos.Y = 100.0f;
 
 	return true;
 
@@ -108,6 +111,7 @@ void Renderer::draw() const
 		mDDraw->Clear(Color::ToARGBHex(colors::WHITE));
 
 		drawGrid();
+		drawLine();
 		drawPlayer();
 	}
 	mDDraw->EndDraw();
@@ -159,6 +163,17 @@ void Renderer::drawGrid() const
 
 	mDDraw->DrawLineBresenham(0, (Int32)originPos.Y - 1, WINDOW_WIDTH - 1, (Int32)originPos.Y - 1, Color::ToARGBHex(colors::RED));
 	mDDraw->DrawLineBresenham((Int32)originPos.X - 1, 0, (Int32)originPos.X - 1, WINDOW_HEIGHT - 1, Color::ToARGBHex(colors::RED));
+}
+
+void Renderer::drawLine() const
+{
+	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
+
+	static Float lineLength = 100.0f;
+	Vector2 startPos = mPlayerPos * lineLength;
+	Vector2 endPos = mPlayerPos * -lineLength;
+
+	mDDraw->DrawLineBresenham(startPos.X, startPos.Y, endPos.X, endPos.Y, Color::ToARGBHex(colors::GREEN));
 }
 
 void Renderer::drawPlayer() const

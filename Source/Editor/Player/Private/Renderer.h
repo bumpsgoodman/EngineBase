@@ -24,6 +24,7 @@ private:
 	void draw() const;
 
 	void drawGrid() const;
+	void drawLine() const;
 	void drawPlayer() const;
 	
 private:
