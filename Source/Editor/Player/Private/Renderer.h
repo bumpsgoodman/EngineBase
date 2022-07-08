@@ -23,6 +23,8 @@ private:
 	void update();
 	void draw() const;
 
+	Vector2 toScreenPos(const Vector2& pos) const;
+
 	void drawGrid() const;
 	void drawLine() const;
 	void drawPlayer() const;
@@ -40,5 +42,5 @@ private:
 	DDraw* mDDraw = nullptr;
 
 	Vector2 mPlayerPos = {};
-	Float mPlayerSpeed = 1.5f;
+	Float mPlayerSpeed = 1.0f;
 };

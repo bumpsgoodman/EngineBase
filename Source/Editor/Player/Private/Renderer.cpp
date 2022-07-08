@@ -91,12 +91,12 @@ void Renderer::update()
 
 	if (event::keyboard::IsKeyPressed(VK_UP))
 	{
-		dir.Y = -1;
+		dir.Y = 1;
 	}
 
 	if (event::keyboard::IsKeyPressed(VK_DOWN))
 	{
-		dir.Y = 1;
+		dir.Y = -1;
 	}
 
 	mPlayerPos = mPlayerPos + (dir * mPlayerSpeed);
@@ -117,6 +117,22 @@ void Renderer::draw() const
 	mDDraw->EndDraw();
 
 	mDDraw->Blt();
+}
+
+Vector2 Renderer::toScreenPos(const Vector2& pos) const
+{
+	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
+
+	const Uint32 WINDOW_WIDTH = mDDraw->GetWidth();
+	const Uint32 WINDOW_HEIGHT = mDDraw->GetHeight();
+
+	Vector2 screenPos(WINDOW_WIDTH * 0.5f + pos.X, WINDOW_HEIGHT * 0.5f + -pos.Y);
+	screenPos.X = MAX(screenPos.X, 0.0f);
+	screenPos.X = MIN(screenPos.X, (Float)WINDOW_WIDTH - 1.0f);
+	screenPos.Y = MAX(screenPos.Y, 0.0f);
+	screenPos.Y = MIN(screenPos.Y, (Float)WINDOW_HEIGHT - 1.0f);
+
+	return screenPos;
 }
 
 void Renderer::drawGrid() const
@@ -169,16 +185,19 @@ void Renderer::drawLine() const
 {
 	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
 
-	static Float lineLength = 100.0f;
+	static Float lineLength = 500.0f;
 	Vector2 startPos = mPlayerPos * lineLength;
 	Vector2 endPos = mPlayerPos * -lineLength;
 
-	mDDraw->DrawLineBresenham(startPos.X, startPos.Y, endPos.X, endPos.Y, Color::ToARGBHex(colors::GREEN));
+	Vector2 startScreenPos = toScreenPos(startPos);
+	Vector2 endScreenPos = toScreenPos(endPos);
+	mDDraw->DrawLineBresenham(startScreenPos.X, startScreenPos.Y, endScreenPos.X, endScreenPos.Y, Color::ToARGBHex(colors::GREEN));
 }
 
 void Renderer::drawPlayer() const
 {
 	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
 
-	mDDraw->DrawCircle((Int32)mPlayerPos.X, (Int32)mPlayerPos.Y, 5, Color::ToARGBHex(colors::BLUE));
+	Vector2 screenPos = toScreenPos(mPlayerPos);
+	mDDraw->DrawCircle((Int32)screenPos.X, (Int32)screenPos.Y, 5, Color::ToARGBHex(colors::BLUE));
 }
