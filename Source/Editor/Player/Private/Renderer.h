@@ -30,7 +30,7 @@ private:
 	void drawPlayer() const;
 	
 private:
-	static constexpr Uint32 FRAME = 60;
+	static constexpr Uint32 FRAME = 144;
 	static constexpr Float TICKS_PER_FRAME = 1000.0f / (Float)FRAME;
 
 	uint32_t mFrameCount = 0;

@@ -24,7 +24,7 @@ public:
     Bool BeginDraw();
     void EndDraw();
     void Clear(const Uint32 color);
-    void Blt();
+    void OnDraw();
 
     Bool BeginGDI(HDC* outHdc);
     void EndGDI(const HDC hdc);

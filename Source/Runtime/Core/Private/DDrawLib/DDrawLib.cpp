@@ -175,7 +175,7 @@ void DDraw::Clear(const Uint32 color)
     }
 }
 
-void DDraw::Blt()
+void DDraw::OnDraw()
 {
     mPrimary->Blt(&mWindowRect, mBack, nullptr, DDBLT_WAIT, nullptr);
 }

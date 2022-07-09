@@ -21,9 +21,6 @@ Bool Renderer::Initialize(const HWND hWnd)
 		goto FAILED;
 	}
 
-	//mPlayerPos.X = (Float)(mDDraw->GetWidth() / 2 - 1);
-	//mPlayerPos.Y = (Float)(mDDraw->GetHeight() / 2 - 1);
-
 	mPlayerPos.X = 100.0f;
 	mPlayerPos.Y = 100.0f;
 
@@ -49,15 +46,14 @@ Bool Renderer::Tick()
 
 	if (tickTimer.IsOnTick())
 	{
-		//Float ticksPerFrame = 1.0f / mFPS;
-		update(0.01f);
+		Float deltaTime = tickTimer.GetDeltaTime();
+		update(deltaTime);
 		draw();
-
 	}
 
 	if (fpsTimer.IsOnTick())
 	{
-		mFPS = (Float)mFrameCount;
+		mFPS = (Float)mFrameCount / 1000.0f;
 		mFrameCount = 0;
 		mbUpdateFPS = true;
 	}
@@ -118,7 +114,7 @@ void Renderer::draw() const
 	}
 	mDDraw->EndDraw();
 
-	mDDraw->Blt();
+	mDDraw->OnDraw();
 }
 
 Vector2 Renderer::toScreenPos(const Vector2& pos) const
@@ -183,7 +179,7 @@ void Renderer::drawLine() const
 {
 	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
 
-	static Float lineLength = 1000.0f;
+	static Float lineLength = 10000.0f;
 	Vector2 startPos = mPlayerPos * lineLength;
 	Vector2 endPos = mPlayerPos * -lineLength;
 

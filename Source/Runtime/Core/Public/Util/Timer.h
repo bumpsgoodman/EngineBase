@@ -12,10 +12,12 @@ public:
     void Update();
 
     inline Float GetInterval() const { return mInterval; }
+    inline Float GetDeltaTime() const { return mElapsedTick / 1000.0f; }
     inline Bool IsOnTick() const { return mbOnTick; }
 
 private:
     Float mInterval = 0.0f;
+    Float mElapsedTick = 0.0f;
     Bool mbOnTick = false;
 
     LARGE_INTEGER mFrequency = {};
