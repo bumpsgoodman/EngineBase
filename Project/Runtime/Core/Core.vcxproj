@@ -171,6 +171,7 @@
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Types\Integer.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Types\Types.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Util\Assert.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Util\RegionCode.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Util\SafeDelete.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Util\Timer.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Util\UtilHeaders.h" />

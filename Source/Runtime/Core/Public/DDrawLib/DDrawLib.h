@@ -38,6 +38,8 @@ public:
     void DrawBitmap(const Int32 destX, const Int32 destY, const Uint32 width, const Uint32 height, const char* const bitmap);
     void DrawBitmapWithColorKey(const Int32 destX, const Int32 destY, const Uint32 width, const Uint32 height, const char* const bitmap, const Uint32 colorKey);
 
+    bool ClipLineCoham(Vector2* inOutStartPos, Vector2* inOutEndPos, const Vector2& windowLeftTop, const Vector2& windowRightBottom);
+
 private:
     HWND mhWnd = 0;
     RECT mWindowRect = {};

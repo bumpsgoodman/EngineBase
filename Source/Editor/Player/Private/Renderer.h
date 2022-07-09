@@ -20,7 +20,7 @@ public:
 	inline Float GetFPS() const { return mFPS; }
 
 private:
-	void update();
+	void update(const Float deltaTime);
 	void draw() const;
 
 	Vector2 toScreenPos(const Vector2& pos) const;
@@ -42,5 +42,5 @@ private:
 	DDraw* mDDraw = nullptr;
 
 	Vector2 mPlayerPos = {};
-	Float mPlayerSpeed = 1.0f;
+	Float mPlayerSpeed = 100.0f;
 };

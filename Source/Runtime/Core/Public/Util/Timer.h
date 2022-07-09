@@ -15,7 +15,7 @@ public:
     inline Bool IsOnTick() const { return mbOnTick; }
 
 private:
-    Float mInterval = 0;
+    Float mInterval = 0.0f;
     Bool mbOnTick = false;
 
     LARGE_INTEGER mFrequency = {};

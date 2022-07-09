@@ -1,4 +1,5 @@
 #include "CorePCH.h"
+#include "Util/RegionCode.h"
 
 DDraw::~DDraw()
 {
@@ -164,9 +165,9 @@ void DDraw::Clear(const Uint32 color)
 {
     AssertW(mLockedBackBuffer != nullptr, L"The back buffer is not locked");
 
-    for (size_t y = 0; y < mHeight; ++y)
+    for (Uint32 y = 0; y < mHeight; ++y)
     {
-        for (size_t x = 0; x < mWidth; ++x)
+        for (Uint32 x = 0; x < mWidth; ++x)
         {
             Uint32* dest = (Uint32*)(mLockedBackBuffer + y * mLockedBackBufferPitch + x * 4);
             *dest = color;
@@ -464,5 +465,73 @@ void DDraw::DrawBitmapWithColorKey(const Int32 destX, const Int32 destY, const U
         src += width * 4;
         dest -= destWidth * 4;
         dest += mLockedBackBufferPitch;
+    }
+}
+
+bool DDraw::ClipLineCoham(Vector2* inOutStartPos, Vector2* inOutEndPos, const Vector2& windowLeftTop, const Vector2& windowRightBottom)
+{
+    AssertW(inOutStartPos != nullptr, L"inOutStartPos is nullptr");
+    AssertW(inOutEndPos != nullptr, L"inOutEndPos is nullptr");
+
+    Uint8 startCode = regioncode::MakeRegionCode(*inOutStartPos, windowLeftTop, windowRightBottom);
+    Uint8 endCode = regioncode::MakeRegionCode(*inOutEndPos, windowLeftTop, windowRightBottom);
+
+    while (true)
+    {
+        Uint8 outsideCode = (startCode == 0) ? endCode : startCode;
+
+        if ((startCode == 0) && (endCode == 0))
+        {
+            return true;
+        }
+        else if (startCode & endCode)
+        {
+            return false;
+        }
+        else
+        {
+            Float width = inOutEndPos->X - inOutStartPos->X;
+            Float height = inOutEndPos->Y - inOutStartPos->Y;
+            Vector2 pos;
+
+            // left or right
+            if (outsideCode < 0b0100)
+            {
+                if (outsideCode & 0b0010)
+                {
+                    pos.X = windowRightBottom.X;
+                }
+                else
+                {
+                    pos.X = windowLeftTop.X;
+                }
+
+                pos.Y = inOutStartPos->Y + height * (pos.X - inOutStartPos->X) / width;
+            }
+            else // top or bottom
+            {
+                if (outsideCode & 0b1000)
+                {
+                    pos.Y = windowLeftTop.Y;
+                }
+                else
+                {
+                    pos.Y = windowRightBottom.Y;
+                }
+
+                pos.X = inOutStartPos->X + width * (pos.Y - inOutStartPos->Y) / height;
+            }
+
+            if (startCode == 0)
+            {
+                *inOutEndPos = pos;
+                endCode = regioncode::MakeRegionCode(*inOutEndPos, windowLeftTop, windowRightBottom);
+            }
+            else
+            {
+                *inOutStartPos = pos;
+                startCode = regioncode::MakeRegionCode(*inOutStartPos, windowLeftTop, windowRightBottom);
+            }
+        }
     }
 }

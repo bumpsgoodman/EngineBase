@@ -13,9 +13,9 @@ void Timer::Update()
 
     QueryPerformanceCounter(&curCounter);
     Double dElapsedTick = (((Double)curCounter.QuadPart - (Double)mPrevCounter.QuadPart) / (Double)mFrequency.QuadPart * 1000.0);
-    Float fElpasedTick = (Float)dElapsedTick;
+    Float fElapsedTick = (Float)dElapsedTick;
 
-    if (fElpasedTick >= mInterval)
+    if (fElapsedTick >= mInterval)
     {
         mbOnTick = true;
         mPrevCounter = curCounter;

@@ -84,6 +84,9 @@
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Types\Bool.h">
       <Filter>Public\Types</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Util\RegionCode.h">
+      <Filter>Public\Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Runtime\Core\Private\CorePCH.cpp">

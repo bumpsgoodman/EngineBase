@@ -5,6 +5,6 @@
 #include <Windows.h>
 
 #include "Types/Types.h"
-#include "DDrawLib/DDrawHeaders.h"
 #include "Math/MathHeaders.h"
 #include "Util/UtilHeaders.h"
+#include "DDrawLib/DDrawHeaders.h"

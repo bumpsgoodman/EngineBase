@@ -49,13 +49,15 @@ Bool Renderer::Tick()
 
 	if (tickTimer.IsOnTick())
 	{
-		update();
+		//Float ticksPerFrame = 1.0f / mFPS;
+		update(0.01f);
 		draw();
+
 	}
 
 	if (fpsTimer.IsOnTick())
 	{
-		mFPS = (Float)mFrameCount / 1000.0f;
+		mFPS = (Float)mFrameCount;
 		mFrameCount = 0;
 		mbUpdateFPS = true;
 	}
@@ -75,7 +77,7 @@ void Renderer::UpdateWindowPos()
 	mDDraw->UpdateWindowPos();
 }
 
-void Renderer::update()
+void Renderer::update(const Float deltaTime)
 {
 	Vector2 dir = {};
 
@@ -99,7 +101,7 @@ void Renderer::update()
 		dir.Y = -1;
 	}
 
-	mPlayerPos = mPlayerPos + (dir * mPlayerSpeed);
+	mPlayerPos = mPlayerPos + (dir * (mPlayerSpeed * deltaTime));
 }
 
 void Renderer::draw() const
@@ -126,11 +128,7 @@ Vector2 Renderer::toScreenPos(const Vector2& pos) const
 	const Uint32 WINDOW_WIDTH = mDDraw->GetWidth();
 	const Uint32 WINDOW_HEIGHT = mDDraw->GetHeight();
 
-	Vector2 screenPos(WINDOW_WIDTH * 0.5f + pos.X, WINDOW_HEIGHT * 0.5f + -pos.Y);
-	screenPos.X = MAX(screenPos.X, 0.0f);
-	screenPos.X = MIN(screenPos.X, (Float)WINDOW_WIDTH - 1.0f);
-	screenPos.Y = MAX(screenPos.Y, 0.0f);
-	screenPos.Y = MIN(screenPos.Y, (Float)WINDOW_HEIGHT - 1.0f);
+	Vector2 screenPos(ROUND(WINDOW_WIDTH * 0.5f + pos.X) - 1, ROUND(WINDOW_HEIGHT * 0.5f + -pos.Y) - 1);
 
 	return screenPos;
 }
@@ -185,13 +183,16 @@ void Renderer::drawLine() const
 {
 	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
 
-	static Float lineLength = 500.0f;
+	static Float lineLength = 1000.0f;
 	Vector2 startPos = mPlayerPos * lineLength;
 	Vector2 endPos = mPlayerPos * -lineLength;
 
 	Vector2 startScreenPos = toScreenPos(startPos);
 	Vector2 endScreenPos = toScreenPos(endPos);
-	mDDraw->DrawLineBresenham(startScreenPos.X, startScreenPos.Y, endScreenPos.X, endScreenPos.Y, Color::ToARGBHex(colors::GREEN));
+	if (mDDraw->ClipLineCoham(&startScreenPos, &endScreenPos, { 0, 0 }, { mDDraw->GetWidth(), mDDraw->GetHeight() }))
+	{
+		mDDraw->DrawLineBresenham((Int32)startScreenPos.X, (Int32)startScreenPos.Y, (Int32)endScreenPos.X, (Int32)endScreenPos.Y, Color::ToARGBHex(colors::GREEN));
+	}
 }
 
 void Renderer::drawPlayer() const
