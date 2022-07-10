@@ -2,7 +2,12 @@
 
 #include <ctype.h>
 #include <wctype.h>
+#include <wchar.h>
 
+typedef char Char;
+typedef wchar_t WChar;
+
+/*
 template <typename CharType>
 struct _Char
 {
@@ -46,3 +51,4 @@ template <> inline Bool _Char<wchar_t>::IsUpper(wchar_t ch) { return iswupper(ch
 template <> inline Bool _Char<wchar_t>::IsLower(wchar_t ch) { return iswlower(ch) != 0; }
 template <> inline Bool _Char<wchar_t>::IsAlpha(wchar_t ch) { return iswalpha(ch) != 0; }
 template <> inline Bool _Char<wchar_t>::IsDigit(wchar_t ch) { return iswdigit(ch) != 0; }
+*/

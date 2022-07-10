@@ -49,17 +49,18 @@ Bool Renderer::Tick()
 		Float deltaTime = tickTimer.GetDeltaTime();
 		update(deltaTime);
 		draw();
+
+		++mFrameCount;
 	}
 
 	if (fpsTimer.IsOnTick())
 	{
-		mFPS = (Float)mFrameCount / 1000.0f;
+		mFPS = (Float)mFrameCount;
 		mFrameCount = 0;
 		mbUpdateFPS = true;
 	}
 	else
 	{
-		++mFrameCount;
 		mbUpdateFPS = false;
 	}
 
@@ -97,7 +98,20 @@ void Renderer::update(const Float deltaTime)
 		dir.Y = -1;
 	}
 
-	mPlayerPos = mPlayerPos + (dir * (mPlayerSpeed * deltaTime));
+	Vector2 pos = mPlayerPos + (dir * (mPlayerSpeed * deltaTime));
+	static const Uint32 WINDOW_WIDTH = mDDraw->GetWidth();
+	static const Uint32 WINDOW_HEIGHT = mDDraw->GetHeight();
+
+	static const Float MIN_X = -(Float)WINDOW_WIDTH * 0.5f;
+	static const Float MIN_Y = -(Float)WINDOW_HEIGHT * 0.5f;
+	static const Float MAX_X = (Float)WINDOW_WIDTH * 0.5f;
+	static const Float MAX_Y = (Float)WINDOW_HEIGHT * 0.5f;
+
+	if (pos.X >= MIN_X && pos.X <= MAX_X
+		&& pos.Y >= MIN_Y && pos.Y <= MAX_Y)
+	{
+		mPlayerPos = pos;
+	}
 }
 
 void Renderer::draw() const
@@ -111,6 +125,7 @@ void Renderer::draw() const
 		drawGrid();
 		drawLine();
 		drawPlayer();
+		drawPlayerPos();
 	}
 	mDDraw->EndDraw();
 
@@ -124,8 +139,7 @@ Vector2 Renderer::toScreenPos(const Vector2& pos) const
 	const Uint32 WINDOW_WIDTH = mDDraw->GetWidth();
 	const Uint32 WINDOW_HEIGHT = mDDraw->GetHeight();
 
-	Vector2 screenPos(ROUND(WINDOW_WIDTH * 0.5f + pos.X) - 1, ROUND(WINDOW_HEIGHT * 0.5f + -pos.Y) - 1);
-
+	Vector2 screenPos(ROUND(WINDOW_WIDTH * 0.5f + pos.X), ROUND(WINDOW_HEIGHT * 0.5f + -pos.Y));
 	return screenPos;
 }
 
@@ -136,43 +150,37 @@ void Renderer::drawGrid() const
 	static const Uint32 WINDOW_WIDTH = mDDraw->GetWidth();
 	static const Uint32 WINDOW_HEIGHT = mDDraw->GetHeight();
 
-	Vector2 originPos(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	static const Float LINE_DISTANCE = 20;
 
-	const Uint32 ROW_BOUNDARY = 100;
-	const Uint32 COL_BOUNDARY = 100;
-	const Uint32 LEVEL_ROW_BOUDNARY = ROW_BOUNDARY / 5;
-	const Uint32 LEVEL_COL_BOUDNARY = COL_BOUNDARY / 5;
+	static const Float MIN_X = -(Float)WINDOW_WIDTH * 0.5f;
+	static const Float MIN_Y = -(Float)WINDOW_HEIGHT * 0.5f;
+	static const Float MAX_X = (Float)WINDOW_WIDTH * 0.5f;
+	static const Float MAX_Y = (Float)WINDOW_HEIGHT * 0.5f;
 
-	for (Uint32 i = 0; i < WINDOW_WIDTH / LEVEL_COL_BOUDNARY; ++i)
+	static const Vector2 START_X_AXIS_POS = toScreenPos({ MIN_X, 0.0f });
+	static const Vector2 END_X_AXIS_POS = toScreenPos({ MAX_X, 0.0f });
+	static const Vector2 START_Y_AXIS_POS = toScreenPos({ 0.0f, MIN_Y });
+	static const Vector2 END_Y_AXIS_POS = toScreenPos({ 0.0f, MAX_Y });
+
+	Vector2 verticalLinePos(MIN_X, MIN_Y);
+	Vector2 horizontalLinePos(MIN_X, MIN_Y);
+
+	for (; verticalLinePos.X <= MAX_X; verticalLinePos.X += LINE_DISTANCE)
 	{
-		Uint32 col = i * LEVEL_COL_BOUDNARY;
-
-		mDDraw->DrawLineBresenham(col - 1, 0, col - 1, WINDOW_HEIGHT - 1, Color::ToARGBHex(colors::LIGHT_GRAY));
+		Vector2 startScreenPos = toScreenPos(verticalLinePos);
+		Vector2 endScreenPos = toScreenPos({ verticalLinePos.X, MAX_Y });
+		mDDraw->DrawLineBresenham(startScreenPos.X, startScreenPos.Y, endScreenPos.X, endScreenPos.Y, Color::ToARGBHex(colors::LIGHT_GRAY));
 	}
 
-	for (Uint32 i = 0; i < WINDOW_HEIGHT / LEVEL_ROW_BOUDNARY; ++i)
+	for (; horizontalLinePos.Y <= MAX_Y; horizontalLinePos.Y += LINE_DISTANCE)
 	{
-		Uint32 row = i * LEVEL_ROW_BOUDNARY;
-
-		mDDraw->DrawLineBresenham(0, row - 1, WINDOW_WIDTH - 1, row - 1, Color::ToARGBHex(colors::LIGHT_GRAY));
+		Vector2 startScreenPos = toScreenPos(horizontalLinePos);
+		Vector2 endScreenPos = toScreenPos({ MAX_X, horizontalLinePos.Y });
+		mDDraw->DrawLineBresenham(startScreenPos.X, startScreenPos.Y, endScreenPos.X, endScreenPos.Y, Color::ToARGBHex(colors::LIGHT_GRAY));
 	}
 
-	for (Uint32 i = 0; i < WINDOW_WIDTH / COL_BOUNDARY; ++i)
-	{
-		Uint32 col = i * COL_BOUNDARY;
-
-		mDDraw->DrawLineBresenham(col - 1, 0, col - 1, WINDOW_HEIGHT - 1, Color::ToARGBHex(colors::BLACK));
-	}
-
-	for (Uint32 i = 0; i < WINDOW_HEIGHT / ROW_BOUNDARY; ++i)
-	{
-		Uint32 row = i * ROW_BOUNDARY;
-
-		mDDraw->DrawLineBresenham(0, row - 1, WINDOW_WIDTH - 1, row - 1, Color::ToARGBHex(colors::BLACK));
-	}
-
-	mDDraw->DrawLineBresenham(0, (Int32)originPos.Y - 1, WINDOW_WIDTH - 1, (Int32)originPos.Y - 1, Color::ToARGBHex(colors::RED));
-	mDDraw->DrawLineBresenham((Int32)originPos.X - 1, 0, (Int32)originPos.X - 1, WINDOW_HEIGHT - 1, Color::ToARGBHex(colors::RED));
+	mDDraw->DrawLineBresenham(START_X_AXIS_POS.X, START_X_AXIS_POS.Y, END_X_AXIS_POS.X, END_X_AXIS_POS.Y, Color::ToARGBHex(colors::RED));
+	mDDraw->DrawLineBresenham(START_Y_AXIS_POS.X, START_Y_AXIS_POS.Y, END_Y_AXIS_POS.X, END_Y_AXIS_POS.Y, Color::ToARGBHex(colors::RED));
 }
 
 void Renderer::drawLine() const
@@ -197,4 +205,18 @@ void Renderer::drawPlayer() const
 
 	Vector2 screenPos = toScreenPos(mPlayerPos);
 	mDDraw->DrawCircle((Int32)screenPos.X, (Int32)screenPos.Y, 5, Color::ToARGBHex(colors::BLUE));
+}
+
+void Renderer::drawPlayerPos() const
+{
+	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
+
+	HDC hdc;
+	mDDraw->BeginGDI(&hdc);
+	{
+		WChar playerPosStr[128];
+		swprintf(playerPosStr, L"(%.2f, %.2f)", mPlayerPos.X, mPlayerPos.Y);
+		mDDraw->PrintText(hdc, playerPosStr, 0, 0, (Uint32)wcslen(playerPosStr), Color::ToARGBHex(colors::RED));
+	}
+	mDDraw->EndGDI(hdc);
 }

@@ -28,19 +28,22 @@ private:
 	void drawGrid() const;
 	void drawLine() const;
 	void drawPlayer() const;
+	void drawPlayerPos() const;
 	
 private:
-	static constexpr Uint32 FRAME = 144;
+	// FPS
+	static constexpr Uint32 FRAME = 1000;
 	static constexpr Float TICKS_PER_FRAME = 1000.0f / (Float)FRAME;
 
 	uint32_t mFrameCount = 0;
 	Float mFPS = 0.0f;
 	Bool mbUpdateFPS = false;
 
-private:
+	// DDraw
 	HWND mhWnd = nullptr;
 	DDraw* mDDraw = nullptr;
 
+	// User defines
 	Vector2 mPlayerPos = {};
 	Float mPlayerSpeed = 100.0f;
 };
