@@ -48,11 +48,11 @@ Bool Renderer::Tick()
 	{
 		Float deltaTime = tickTimer.GetDeltaTime();
 		update(deltaTime);
-		draw();
-
-		++mFrameCount;
 	}
 
+	draw();
+
+	++mFrameCount;
 	if (fpsTimer.IsOnTick())
 	{
 		mFPS = (Float)mFrameCount;

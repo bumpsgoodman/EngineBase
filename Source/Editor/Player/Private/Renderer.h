@@ -32,7 +32,7 @@ private:
 	
 private:
 	// FPS
-	static constexpr Uint32 FRAME = 1000;
+	static constexpr Uint32 FRAME = 144;
 	static constexpr Float TICKS_PER_FRAME = 1000.0f / (Float)FRAME;
 
 	uint32_t mFrameCount = 0;
