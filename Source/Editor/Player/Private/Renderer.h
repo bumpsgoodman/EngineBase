@@ -11,19 +11,19 @@ public:
 	~Renderer();
 
 	Bool Initialize(const HWND hWnd);
-	void Shutdown();
+	void Release();
 	Bool Tick();
 
 	void UpdateWindowPos();
 
 	inline Bool IsUpdateFPS() const { return mbUpdateFPS; }
-	inline Float GetFPS() const { return mFPS; }
+	inline Uint32 GetFPS() const { return mFPS; }
 
 private:
 	void update(const Float deltaTime);
-	void draw() const;
+	void draw();
 
-	Vector2 toScreenPos(const Vector2& pos) const;
+	IntVector2 toScreenPos(const Vector2& pos) const;
 
 	void drawGrid() const;
 	void drawLine() const;
@@ -35,8 +35,8 @@ private:
 	static constexpr Uint32 FRAME = 144;
 	static constexpr Float TICKS_PER_FRAME = 1000.0f / (Float)FRAME;
 
-	uint32_t mFrameCount = 0;
-	Float mFPS = 0.0f;
+	Uint32 mFrameCount = 0;
+	Uint32 mFPS = 0;
 	Bool mbUpdateFPS = false;
 
 	// DDraw

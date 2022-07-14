@@ -3,7 +3,7 @@
 
 Renderer::~Renderer()
 {
-	Shutdown();
+	Release();
 }
 
 Bool Renderer::Initialize(const HWND hWnd)
@@ -27,42 +27,27 @@ Bool Renderer::Initialize(const HWND hWnd)
 	return true;
 
 FAILED:
-	Shutdown();
+	Release();
 	return false;
 }
 
-void Renderer::Shutdown()
+void Renderer::Release()
 {
 	SAFE_DELETE(mDDraw);
 }
 
 Bool Renderer::Tick()
 {
-	static Timer tickTimer(TICKS_PER_FRAME);
-	static Timer fpsTimer(1000.0f);
-
-	tickTimer.Update();
-	fpsTimer.Update();
-
-	if (tickTimer.IsOnTick())
+	static Timer gameFrameTimer(TICKS_PER_FRAME);
+	
+	gameFrameTimer.Update();
+	if (gameFrameTimer.IsOnTick())
 	{
-		Float deltaTime = tickTimer.GetDeltaTime();
+		Float deltaTime = gameFrameTimer.GetDeltaTime();
 		update(deltaTime);
 	}
 
 	draw();
-
-	++mFrameCount;
-	if (fpsTimer.IsOnTick())
-	{
-		mFPS = (Float)mFrameCount;
-		mFrameCount = 0;
-		mbUpdateFPS = true;
-	}
-	else
-	{
-		mbUpdateFPS = false;
-	}
 
 	return true;
 }
@@ -98,7 +83,7 @@ void Renderer::update(const Float deltaTime)
 		dir.Y = -1;
 	}
 
-	Vector2 pos = mPlayerPos + (dir * (mPlayerSpeed * deltaTime));
+	Vector2 pos = mPlayerPos + dir * (mPlayerSpeed * deltaTime);
 	static const Uint32 WINDOW_WIDTH = mDDraw->GetWidth();
 	static const Uint32 WINDOW_HEIGHT = mDDraw->GetHeight();
 
@@ -114,7 +99,7 @@ void Renderer::update(const Float deltaTime)
 	}
 }
 
-void Renderer::draw() const
+void Renderer::draw()
 {
 	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
 
@@ -128,18 +113,32 @@ void Renderer::draw() const
 		drawPlayerPos();
 	}
 	mDDraw->EndDraw();
-
 	mDDraw->OnDraw();
+
+	static Timer fpsTimer(1000.0f);
+	fpsTimer.Update();
+
+	++mFrameCount;
+	if (fpsTimer.IsOnTick())
+	{
+		mFPS = mFrameCount;
+		mFrameCount = 0;
+		mbUpdateFPS = true;
+	}
+	else
+	{
+		mbUpdateFPS = false;
+	}
 }
 
-Vector2 Renderer::toScreenPos(const Vector2& pos) const
+IntVector2 Renderer::toScreenPos(const Vector2& pos) const
 {
 	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
 
 	const Uint32 WINDOW_WIDTH = mDDraw->GetWidth();
 	const Uint32 WINDOW_HEIGHT = mDDraw->GetHeight();
 
-	Vector2 screenPos(ROUND(WINDOW_WIDTH * 0.5f + pos.X), ROUND(WINDOW_HEIGHT * 0.5f + -pos.Y));
+	IntVector2 screenPos(ROUND(WINDOW_WIDTH * 0.5f + pos.X), ROUND(WINDOW_HEIGHT * 0.5f + -pos.Y));
 	return screenPos;
 }
 
@@ -157,45 +156,45 @@ void Renderer::drawGrid() const
 	static const Float MAX_X = (Float)WINDOW_WIDTH * 0.5f;
 	static const Float MAX_Y = (Float)WINDOW_HEIGHT * 0.5f;
 
-	static const Vector2 START_X_AXIS_POS = toScreenPos({ MIN_X, 0.0f });
-	static const Vector2 END_X_AXIS_POS = toScreenPos({ MAX_X, 0.0f });
-	static const Vector2 START_Y_AXIS_POS = toScreenPos({ 0.0f, MIN_Y });
-	static const Vector2 END_Y_AXIS_POS = toScreenPos({ 0.0f, MAX_Y });
+	static const IntVector2 START_X_AXIS_POS = toScreenPos({ MIN_X, 0.0f });
+	static const IntVector2 END_X_AXIS_POS = toScreenPos({ MAX_X, 0.0f });
+	static const IntVector2 START_Y_AXIS_POS = toScreenPos({ 0.0f, MIN_Y });
+	static const IntVector2 END_Y_AXIS_POS = toScreenPos({ 0.0f, MAX_Y });
 
 	Vector2 verticalLinePos(MIN_X, MIN_Y);
 	Vector2 horizontalLinePos(MIN_X, MIN_Y);
 
 	for (; verticalLinePos.X <= MAX_X; verticalLinePos.X += LINE_DISTANCE)
 	{
-		Vector2 startScreenPos = toScreenPos(verticalLinePos);
-		Vector2 endScreenPos = toScreenPos({ verticalLinePos.X, MAX_Y });
-		mDDraw->DrawLineBresenham(startScreenPos.X, startScreenPos.Y, endScreenPos.X, endScreenPos.Y, Color::ToARGBHex(colors::LIGHT_GRAY));
+		IntVector2 startScreenPos = toScreenPos(verticalLinePos);
+		IntVector2 endScreenPos = toScreenPos({ verticalLinePos.X, MAX_Y });
+		mDDraw->DrawLineBresenham(startScreenPos, endScreenPos, Color::ToARGBHex(colors::LIGHT_GRAY));
 	}
 
 	for (; horizontalLinePos.Y <= MAX_Y; horizontalLinePos.Y += LINE_DISTANCE)
 	{
-		Vector2 startScreenPos = toScreenPos(horizontalLinePos);
-		Vector2 endScreenPos = toScreenPos({ MAX_X, horizontalLinePos.Y });
-		mDDraw->DrawLineBresenham(startScreenPos.X, startScreenPos.Y, endScreenPos.X, endScreenPos.Y, Color::ToARGBHex(colors::LIGHT_GRAY));
+		IntVector2 startScreenPos = toScreenPos(horizontalLinePos);
+		IntVector2 endScreenPos = toScreenPos({ MAX_X, horizontalLinePos.Y });
+		mDDraw->DrawLineBresenham(startScreenPos, endScreenPos, Color::ToARGBHex(colors::LIGHT_GRAY));
 	}
 
-	mDDraw->DrawLineBresenham(START_X_AXIS_POS.X, START_X_AXIS_POS.Y, END_X_AXIS_POS.X, END_X_AXIS_POS.Y, Color::ToARGBHex(colors::RED));
-	mDDraw->DrawLineBresenham(START_Y_AXIS_POS.X, START_Y_AXIS_POS.Y, END_Y_AXIS_POS.X, END_Y_AXIS_POS.Y, Color::ToARGBHex(colors::RED));
+	mDDraw->DrawLineBresenham(START_X_AXIS_POS, END_X_AXIS_POS, Color::ToARGBHex(colors::RED));
+	mDDraw->DrawLineBresenham(START_Y_AXIS_POS, END_Y_AXIS_POS, Color::ToARGBHex(colors::RED));
 }
 
 void Renderer::drawLine() const
 {
 	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
 
-	static Float lineLength = 10000.0f;
+	static Float lineLength = 5000.0f;
 	Vector2 startPos = mPlayerPos * lineLength;
 	Vector2 endPos = mPlayerPos * -lineLength;
 
-	Vector2 startScreenPos = toScreenPos(startPos);
-	Vector2 endScreenPos = toScreenPos(endPos);
+	IntVector2 startScreenPos = toScreenPos(startPos);
+	IntVector2 endScreenPos = toScreenPos(endPos);
 	if (mDDraw->ClipLineCoham(&startScreenPos, &endScreenPos, { 0, 0 }, { mDDraw->GetWidth(), mDDraw->GetHeight() }))
 	{
-		mDDraw->DrawLineBresenham((Int32)startScreenPos.X, (Int32)startScreenPos.Y, (Int32)endScreenPos.X, (Int32)endScreenPos.Y, Color::ToARGBHex(colors::GREEN));
+		mDDraw->DrawLineBresenham(startScreenPos, endScreenPos, Color::ToARGBHex(colors::GREEN));
 	}
 }
 
@@ -203,8 +202,8 @@ void Renderer::drawPlayer() const
 {
 	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
 
-	Vector2 screenPos = toScreenPos(mPlayerPos);
-	mDDraw->DrawCircle((Int32)screenPos.X, (Int32)screenPos.Y, 5, Color::ToARGBHex(colors::BLUE));
+	IntVector2 screenPos = toScreenPos(mPlayerPos);
+	mDDraw->DrawCircle(screenPos, 5, Color::ToARGBHex(colors::BLUE));
 }
 
 void Renderer::drawPlayerPos() const

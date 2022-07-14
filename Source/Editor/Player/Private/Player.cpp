@@ -41,8 +41,8 @@ int WINAPI wWinMain(
     {
         if (renderer->IsUpdateFPS())
         {
-            Float fps = renderer->GetFPS();
-            swprintf(window::gExtendedAppName, L"FPS: %.1f", fps);
+            Uint32 fps = renderer->GetFPS();
+            swprintf(window::gExtendedAppName, L"FPS: %lu", fps);
             window::SetTitle();
         }
 
@@ -50,7 +50,7 @@ int WINAPI wWinMain(
     }
 
 EXIT:
-    renderer->Shutdown();
+    renderer->Release();
     window::Destroy();
 
     return 0;

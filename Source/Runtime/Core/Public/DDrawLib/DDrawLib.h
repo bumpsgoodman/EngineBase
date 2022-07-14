@@ -30,15 +30,15 @@ public:
     void EndGDI(const HDC hdc);
     void PrintText(const HDC hdc, const wchar_t* const text, const Int32 destX, const Int32 destY, const Uint32 length, const Uint32 color);
 
-    void DrawPixel(const Uint32 destX, const Uint32 destY, const Uint32 color);
-    void DrawLineDDA(const Int32 x0, const Int32 y0, const Int32 x1, const Int32 y1, const Uint32 color);
-    void DrawLineBresenham(const Int32 x0, const Int32 y0, const Int32 x1, const Int32 y1, const Uint32 color);
-    void DrawCircle(const Int32 centerX, const Int32 centerY, const Uint32 radius, const Uint32 color);
-    void DrawRectangle(const Int32 destX, const Int32 destY, const Uint32 width, const Uint32 height, const Uint32 color);
+    void DrawPixel(const IntVector2& dest, const Uint32 color);
+    void DrawLineDDA(const IntVector2& start, const IntVector2& end, const Uint32 color);
+    void DrawLineBresenham(const IntVector2& start, const IntVector2& end, const Uint32 color);
+    void DrawCircle(const IntVector2& center, const Uint32 radius, const Uint32 color);
+    void DrawRectangle(const IntVector2& dest, const Uint32 width, const Uint32 height, const Uint32 color);
     void DrawBitmap(const Int32 destX, const Int32 destY, const Uint32 width, const Uint32 height, const char* const bitmap);
     void DrawBitmapWithColorKey(const Int32 destX, const Int32 destY, const Uint32 width, const Uint32 height, const char* const bitmap, const Uint32 colorKey);
 
-    bool ClipLineCoham(Vector2* inOutStartPos, Vector2* inOutEndPos, const Vector2& windowLeftTop, const Vector2& windowRightBottom);
+    bool ClipLineCoham(IntVector2* inOutStartPos, IntVector2* inOutEndPos, const IntVector2& windowLeftTop, const IntVector2& windowRightBottom);
 
 private:
     HWND mhWnd = 0;

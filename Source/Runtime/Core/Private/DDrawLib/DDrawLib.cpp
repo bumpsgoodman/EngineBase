@@ -214,68 +214,48 @@ void DDraw::PrintText(const HDC hdc, const wchar_t* const text, const Int32 dest
     TextOut(hdc, destX, destY, text, length);
 }
 
-void DDraw::DrawPixel(const Uint32 destX, const Uint32 destY, const Uint32 color)
+void DDraw::DrawPixel(const IntVector2& dest, const Uint32 color)
 {
     AssertW(mLockedBackBuffer != nullptr, L"The back buffer is not locked");
     //AssertW(destX <= mWidth && destY <= mHeight, L"Out of range x, y");
 
-    if (destX >= mWidth || destY >= mHeight)
+    if ((Uint32)dest.X >= mWidth || (Uint32)dest.Y >= mHeight)
     {
         return;
     }
 
     //Uint32* dest = (Uint32*)(mLockedBackBuffer + destY * mLockedBackBufferPitch + destX * 4);
     //*dest = color;
-    *(Uint32*)(mLockedBackBuffer + destY * mLockedBackBufferPitch + destX * 4) = color;
+    *(Uint32*)(mLockedBackBuffer + dest.Y * mLockedBackBufferPitch + dest.X * 4) = color;
 }
 
-void DDraw::DrawLineDDA(const Int32 x0, const Int32 y0, const Int32 x1, const Int32 y1, const Uint32 color)
+void DDraw::DrawLineDDA(const IntVector2& start, const IntVector2& end, const Uint32 color)
 {
-    Uint32 startX = MAX(x0, 0);
-    Uint32 startY = MAX(y0, 0);
-    Uint32 endX = MIN((Uint32)x1, mWidth);
-    Uint32 endY = MIN((Uint32)y1, mHeight);
+    Float x = (Float)start.X;
+    Float y = (Float)start.Y;
 
-    startX = MIN((Uint32)x0, mWidth);
-    startY = MIN((Uint32)y0, mHeight);
-    endX = MAX(x1, 0);
-    endY = MAX(y1, 0);
-
-    Float x = (Float)startX;
-    Float y = (Float)startY;
-
-    Int32 dx = endX - startX;
-    Int32 dy = endY - startY;
+    Int32 dx = end.X - start.X;
+    Int32 dy = end.Y - start.Y;
     Uint32 steps = (ABS(dx) > (ABS(dy))) ? ABS(dx) : ABS(dy);
 
     Float xIncreament = dx / (Float)steps;
     Float yIncreament = dy / (Float)steps;
 
-    DrawPixel(startX, startY, color);
+    DrawPixel(start, color);
 
     for (Uint32 i = 0; i < steps; ++i)
     {
         x += xIncreament;
         y += yIncreament;
 
-        DrawPixel(ROUND(x), ROUND(y), color);
+        DrawPixel({ ROUND(x), ROUND(y) }, color);
     }
 }
 
-void DDraw::DrawLineBresenham(const Int32 x0, const Int32 y0, const Int32 x1, const Int32 y1, const Uint32 color)
+void DDraw::DrawLineBresenham(const IntVector2& start, const IntVector2& end, const Uint32 color)
 {
-    Uint32 startX = MAX(x0, 0);
-    Uint32 startY = MAX(y0, 0);
-    Uint32 endX = MIN((Uint32)x1, mWidth);
-    Uint32 endY = MIN((Uint32)y1, mHeight);
-
-    startX = MIN((Uint32)x0, mWidth);
-    startY = MIN((Uint32)y0, mHeight);
-    endX = MAX(x1, 0);
-    endY = MAX(y1, 0);
-
-    Int32 width = x1 - x0;
-    Int32 height = y1 - y0;
+    Int32 width = end.X - start.X;
+    Int32 height = end.Y - start.Y;
     Bool bGradualSlope = (ABS(width) >= ABS(height)) ? true : false;
 
     Int32 dx = (width >= 0) ? 1 : -1;
@@ -287,14 +267,13 @@ void DDraw::DrawLineBresenham(const Int32 x0, const Int32 y0, const Int32 x1, co
     Int32 p1 = (bGradualSlope) ? 2 * h : 2 * w;
     Int32 p2 = (bGradualSlope) ? 2 * h - 2 * w : 2 * w - 2 * h;
 
-    Uint32 x = startX;
-    Uint32 y = startY;
+    IntVector2 pos(start);
 
     if (bGradualSlope)
     {
-        while (x != endX)
+        while (pos.X != end.X)
         {
-            DrawPixel(x, y, color);
+            DrawPixel(pos, color);
 
             if (p < 0)
             {
@@ -302,18 +281,18 @@ void DDraw::DrawLineBresenham(const Int32 x0, const Int32 y0, const Int32 x1, co
             }
             else
             {
-                y += dy;
+                pos.Y += dy;
                 p += p2;
             }
 
-            x += dx;
+            pos.X += dx;
         }
     }
     else
     {
-        while (y != endY)
+        while (pos.Y != end.Y)
         {
-            DrawPixel(x, y, color);
+            DrawPixel(pos, color);
 
             if (p < 0)
             {
@@ -321,27 +300,27 @@ void DDraw::DrawLineBresenham(const Int32 x0, const Int32 y0, const Int32 x1, co
             }
             else
             {
-                x += dx;
+                pos.X += dx;
                 p += p2;
             }
 
-            y += dy;
+            pos.Y += dy;
         }
     }
 
-    DrawPixel(x, y, color);
+    DrawPixel(pos, color);
 }
 
-void DDraw::DrawCircle(const Int32 centerX, const Int32 centerY, const Uint32 radius, const Uint32 color)
+void DDraw::DrawCircle(const IntVector2& center, const Uint32 radius, const Uint32 color)
 {
     Int32 x = 0;
     Int32 y = radius;
     Int32 p = 1 - radius;
 
-    DrawPixel(centerX + radius, centerY, color);
-    DrawPixel(centerX - radius, centerY, color);
-    DrawPixel(centerX, centerY + radius, color);
-    DrawPixel(centerX, centerY - radius, color);
+    DrawPixel({ center.X + (Int32)radius, center.Y }, color);
+    DrawPixel({ center.X - (Int32)radius, center.Y }, color);
+    DrawPixel({ center.X, center.Y + (Int32)radius }, color);
+    DrawPixel({ center.X, center.Y - (Int32)radius }, color);
 
     while (x < y)
     {
@@ -356,31 +335,31 @@ void DDraw::DrawCircle(const Int32 centerX, const Int32 centerY, const Uint32 ra
             p = p + 2 * (x - y) + 1;
         }
 
-        DrawPixel(centerX + x, centerY + y, color);
-        DrawPixel(centerX + y, centerY + x, color);
-        DrawPixel(centerX + y, centerY - x, color);
-        DrawPixel(centerX + x, centerY - y, color);
-        DrawPixel(centerX - x, centerY - y, color);
-        DrawPixel(centerX - y, centerY - x, color);
-        DrawPixel(centerX - y, centerY + x, color);
-        DrawPixel(centerX - x, centerY + y, color);
+        DrawPixel({ center.X + x, center.Y + y }, color);
+        DrawPixel({ center.X + y, center.Y + x }, color);
+        DrawPixel({ center.X + y, center.Y - x }, color);
+        DrawPixel({ center.X + x, center.Y - y }, color);
+        DrawPixel({ center.X - x, center.Y - y }, color);
+        DrawPixel({ center.X - y, center.Y - x }, color);
+        DrawPixel({ center.X - y, center.Y + x }, color);
+        DrawPixel({ center.X - x, center.Y + y }, color);
     }
 }
 
-void DDraw::DrawRectangle(const Int32 destX, const Int32 destY, const Uint32 width, const Uint32 height, const Uint32 color)
+void DDraw::DrawRectangle(const IntVector2& dest, const Uint32 width, const Uint32 height, const Uint32 color)
 {
     AssertW(mLockedBackBuffer != nullptr, L"The back buffer is not locked");
 
-    const Uint32 startX = MAX(destX, 0);
-    const Uint32 startY = MAX(destY, 0);
-    const Uint32 endX = MIN(destX + width, mWidth);
-    const Uint32 endY = MIN(destY + height, mHeight);
+    const Uint32 startX = MAX((Uint32)dest.X, 0);
+    const Uint32 startY = MAX((Uint32)dest.Y, 0);
+    const Uint32 endX = MIN((Uint32)dest.X + width, mWidth);
+    const Uint32 endY = MIN((Uint32)dest.Y + height, mHeight);
 
     for (Uint32 y = startY; y < endY; ++y)
     {
         for (Uint32 x = startX; x < endX; ++x)
         {
-            DrawPixel(x, y, color);
+            DrawPixel({ x, y }, color);
         }
     }
 }
@@ -468,7 +447,7 @@ void DDraw::DrawBitmapWithColorKey(const Int32 destX, const Int32 destY, const U
     }
 }
 
-bool DDraw::ClipLineCoham(Vector2* inOutStartPos, Vector2* inOutEndPos, const Vector2& windowLeftTop, const Vector2& windowRightBottom)
+bool DDraw::ClipLineCoham(IntVector2* inOutStartPos, IntVector2* inOutEndPos, const IntVector2& windowLeftTop, const IntVector2& windowRightBottom)
 {
     AssertW(inOutStartPos != nullptr, L"inOutStartPos is nullptr");
     AssertW(inOutEndPos != nullptr, L"inOutEndPos is nullptr");
@@ -490,9 +469,9 @@ bool DDraw::ClipLineCoham(Vector2* inOutStartPos, Vector2* inOutEndPos, const Ve
         }
         else
         {
-            Float width = inOutEndPos->X - inOutStartPos->X;
-            Float height = inOutEndPos->Y - inOutStartPos->Y;
-            Vector2 pos;
+            Float width = (Float)(inOutEndPos->X - inOutStartPos->X);
+            Float height = (Float)(inOutEndPos->Y - inOutStartPos->Y);
+            IntVector2 pos;
 
             // left or right
             if (outsideCode < 0b0100)
@@ -506,7 +485,7 @@ bool DDraw::ClipLineCoham(Vector2* inOutStartPos, Vector2* inOutEndPos, const Ve
                     pos.X = windowLeftTop.X;
                 }
 
-                pos.Y = inOutStartPos->Y + height * (pos.X - inOutStartPos->X) / width;
+                pos.Y = ROUND(inOutStartPos->Y + height * (pos.X - inOutStartPos->X) / width);
             }
             else // top or bottom
             {
@@ -519,7 +498,7 @@ bool DDraw::ClipLineCoham(Vector2* inOutStartPos, Vector2* inOutEndPos, const Ve
                     pos.Y = windowRightBottom.Y;
                 }
 
-                pos.X = inOutStartPos->X + width * (pos.Y - inOutStartPos->Y) / height;
+                pos.X = ROUND(inOutStartPos->X + width * (pos.Y - inOutStartPos->Y) / height);
             }
 
             if (startCode == 0)

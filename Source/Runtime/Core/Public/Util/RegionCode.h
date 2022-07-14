@@ -2,10 +2,10 @@
 
 namespace regioncode
 {
-    Uint8 MakeRegionCode(const Vector2& pos, const Vector2& regionLeftTopPos, const Vector2& regionRightBottom);
+    Uint8 MakeRegionCode(const IntVector2& pos, const IntVector2& regionLeftTopPos, const IntVector2& regionRightBottom);
 }
 
-Uint8 regioncode::MakeRegionCode(const Vector2& pos, const Vector2& regionLeftTopPos, const Vector2& regionRightBottom)
+Uint8 regioncode::MakeRegionCode(const IntVector2& pos, const IntVector2& regionLeftTopPos, const IntVector2& regionRightBottom)
 {
     Uint8 regionCode = 0;
 

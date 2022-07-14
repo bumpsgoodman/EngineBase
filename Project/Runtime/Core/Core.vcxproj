@@ -161,6 +161,7 @@
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\DDrawLib\DDrawHeaders.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\DDrawLib\DDrawLib.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Math\Color.h" />
+    <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Math\IntVector2.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Math\MathHeaders.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Math\MathUtil.h" />
     <ClInclude Include="..\..\..\Source\Runtime\Core\Public\Math\Vector2.h" />
