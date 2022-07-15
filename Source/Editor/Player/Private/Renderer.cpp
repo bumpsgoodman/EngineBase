@@ -135,11 +135,13 @@ IntVector2 Renderer::toScreenPos(const Vector2& pos) const
 {
 	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
 
-	const Uint32 WINDOW_WIDTH = mDDraw->GetWidth();
-	const Uint32 WINDOW_HEIGHT = mDDraw->GetHeight();
+	static const Uint32 WINDOW_WIDTH = mDDraw->GetWidth();
+	static const Uint32 WINDOW_HEIGHT = mDDraw->GetHeight();
 
 	IntVector2 screenPos(ROUND(WINDOW_WIDTH * 0.5f + pos.X), ROUND(WINDOW_HEIGHT * 0.5f + -pos.Y));
 	return screenPos;
+
+	//return IntVector2(ROUND(WINDOW_WIDTH * 0.5f + pos.X), ROUND(WINDOW_HEIGHT * 0.5f + -pos.Y));
 }
 
 void Renderer::drawGrid() const
