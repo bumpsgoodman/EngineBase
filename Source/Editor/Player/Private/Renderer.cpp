@@ -1,4 +1,7 @@
 #include "PlayerPCH.h"
+
+#include <vector>
+
 #include "Renderer.h"
 
 Renderer::~Renderer()
@@ -205,7 +208,31 @@ void Renderer::drawPlayer() const
 	AssertW(mDDraw != nullptr, L"DDraw object is nullptr");
 
 	IntVector2 screenPos = toScreenPos(mPlayerPos);
-	mDDraw->DrawCircle(screenPos, 5, Color::ToARGBHex(colors::BLUE));
+	//mDDraw->DrawCircle(screenPos, 5, Color::ToARGBHex(colors::BLUE));
+
+	static const Int32 RADIUS = 10;
+	static const Uint32 SQUARED_RADIUS = RADIUS * RADIUS;
+
+	static std::vector<IntVector2> posVect;
+	if (posVect.empty())
+	{
+		for (Int32 i = -RADIUS; i <= RADIUS; ++i)
+		{
+			for (Int32 j = -RADIUS; j <= RADIUS; ++j)
+			{
+				Uint32 squared = i * i + j * j;
+				if (squared <= SQUARED_RADIUS)
+				{
+					posVect.push_back({ i, j });
+				}
+			}
+		}
+	}
+
+	for (const IntVector2& pos : posVect)
+	{
+		mDDraw->DrawPixel(screenPos + pos, Color::ToARGBHex(colors::BLUE));
+	}
 }
 
 void Renderer::drawPlayerPos() const
